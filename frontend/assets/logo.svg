@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 470 120" role="img" aria-label="DamCompany">
+  <!-- Lightning bolt -->
+  <path d="M150 6 L92 64 L128 64 L104 116 L188 44 L150 44 L172 6 Z"
+        fill="#FFC83D" stroke="#1A1A1A" stroke-width="3" stroke-linejoin="round"/>
+  <!-- Wordmark "Dam" : uses currentColor so it adapts to dark / light backgrounds -->
+  <text x="150" y="92" font-family="'Poppins','Segoe UI',Arial,sans-serif"
+        font-size="96" font-weight="800" letter-spacing="-4" fill="currentColor">Dam</text>
+  <!-- The "C" rendered as an open ring -->
+  <path d="M439.2 36.7 A 33 33 0 1 0 439.2 87.3" fill="none"
+        stroke="currentColor" stroke-width="22" stroke-linecap="round"/>
+</svg>
