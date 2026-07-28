@@ -1,0 +1,90 @@
+/* Design tokens — refonte immersive DamCompany (doc 06-direction-artistique.md) */
+
+:root {
+  /* Couleurs — reprise de l'identité existante */
+  --dc-cream: #faf7ef;
+  --dc-cream-2: #fffdf8;
+  --dc-black: #141414;
+  --dc-black-deep: #0d0d0d;
+  --dc-yellow: #ffc83d;
+  --dc-yellow-2: #ffd873;
+  --dc-text: #1c1c1c;
+  --dc-text-muted: #6b6b6b;
+  --dc-text-invert: #f4f4f4;
+  --dc-border: #ece7d8;
+
+  /* Sémantique */
+  --dc-bg: var(--dc-cream);
+  --dc-bg-cine: var(--dc-black-deep);
+  --dc-accent: var(--dc-yellow);
+  --dc-accent-hover: var(--dc-yellow-2);
+  --dc-fg: var(--dc-text);
+  --dc-fg-muted: var(--dc-text-muted);
+  --dc-fg-invert: var(--dc-text-invert);
+
+  /* Typographie */
+  --font-display: var(--font-space-grotesk), "Space Grotesk", system-ui, sans-serif;
+  --font-body: var(--font-poppins), Poppins, system-ui, sans-serif;
+
+  --fs-hero: clamp(2.75rem, 8vw, 8rem);
+  --fs-h1: clamp(2rem, 4.5vw, 4rem);
+  --fs-h2: clamp(1.5rem, 3vw, 2.5rem);
+  --fs-h3: clamp(1.25rem, 2vw, 1.75rem);
+  --fs-body: clamp(1rem, 1.1vw, 1.125rem);
+  --fs-small: 0.875rem;
+  --fs-eyebrow: 0.8125rem;
+
+  --lh-tight: 1.05;
+  --lh-heading: 1.15;
+  --lh-body: 1.6;
+
+  /* Grille & espacements (échelle 4px) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --space-32: 128px;
+
+  --grid-columns: 12;
+  --grid-gutter: 24px;
+  --container-max: 1440px;
+  --container-padding: clamp(20px, 5vw, 64px);
+
+  /* Rayons */
+  --r-sm: 12px;
+  --r: 18px;
+  --r-lg: 26px;
+  --r-xl: 36px;
+
+  /* Ombres */
+  --sh-sm: 0 4px 14px rgba(20, 20, 20, 0.06);
+  --sh: 0 14px 40px rgba(20, 20, 20, 0.08);
+  --sh-lg: 0 24px 60px rgba(20, 20, 20, 0.12);
+  --sh-cine: 0 30px 80px rgba(0, 0, 0, 0.5);
+
+  /* Mouvement */
+  --dur-xfast: 120ms;
+  --dur-fast: 240ms;
+  --dur-base: 400ms;
+  --dur-slow: 700ms;
+  --dur-cine: 1000ms;
+
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.7, 0, 0.84, 0);
+
+  --focus-ring: 0 0 0 2px var(--dc-bg), 0 0 0 4px var(--dc-accent);
+}
+
+/* Registre cinématique sombre (hero moments, univers, galerie) */
+.dc-theme-cine {
+  --dc-bg: var(--dc-bg-cine);
+  --dc-fg: var(--dc-fg-invert);
+  --dc-fg-muted: #a8a8a8;
+  --dc-border: rgba(244, 244, 244, 0.12);
+}
