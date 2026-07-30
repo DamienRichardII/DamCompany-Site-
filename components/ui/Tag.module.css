@@ -1,0 +1,12 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: rgba(255, 200, 61, 0.14);
+  color: var(--dc-accent);
+  border: 1px solid rgba(255, 200, 61, 0.3);
+}

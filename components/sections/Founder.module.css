@@ -1,0 +1,44 @@
+.founder {
+  background: var(--dc-bg);
+  color: var(--dc-fg);
+  padding-block: var(--space-24);
+}
+
+.grid {
+  display: grid;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.portraitPlaceholder {
+  aspect-ratio: 4 / 5;
+  border-radius: var(--r-lg);
+  border: 1.5px dashed var(--dc-border);
+  background: var(--dc-cream-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--dc-fg-muted);
+  font-size: var(--fs-small);
+  text-align: center;
+  padding: var(--space-6);
+  max-width: 320px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-h1);
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.text {
+  color: var(--dc-fg-muted);
+  max-width: 52ch;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: 320px 1fr;
+  }
+}

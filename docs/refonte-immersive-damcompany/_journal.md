@@ -1,7 +1,7 @@
 # Journal d'exécution — Refonte immersive DamCompany
 
-> Journal de bord de l'exécution du prompt `13-prompt-execution-claude-code.md`.
-> Mis à jour au fil de l'exécution, dans l'ordre chronologique.
+> Journal de bord de l'exécution des prompts `13-prompt-execution-claude-code.md` (Phase 0-2)
+> et `14-prompt-execution-phase3.md` (Phase 3). Mis à jour au fil de l'exécution, dans l'ordre chronologique.
 
 ---
 
@@ -96,3 +96,51 @@ Un nouveau `README.md` à la racine documentera la coexistence des deux bases le
   - Images (`next/image`) servies en formats responsives (`w=384/640`, `q=75`), aucune 404.
   - **`prefers-reduced-motion` :** vérifié par revue de code (chaque composant motion branche explicitement sur `useReducedMotion()`) + filet CSS global (`app/globals.css`) qui neutralise toute transition/animation quel que soit l'état JS. **Non vérifié en émulation navigateur live** — l'outil de preview disponible dans cet environnement ne permet pas d'émuler `prefers-reduced-motion` (contrairement à `colorScheme`). Recommandation : vérifier manuellement via les réglages système/navigateur avant mise en production.
   - Capture d'écran visuelle non obtenue (le panneau navigateur de cet environnement ne composite pas d'image dans cette session) — validation faite via DOM/computed styles/network au lieu d'un contrôle visuel direct. Recommandation : un contrôle visuel humain reste utile avant validation finale.
+
+---
+
+## Phase 3 — Homepage narrative (2026-07-30)
+
+### Sections livrées
+
+Dans l'ordre du storyboard (doc 05 #4→#12), insérées dans `app/page.tsx` à la place du bloc de commentaire laissé en Phase 2, sans toucher à `<Loader/>`, `<Hero/>` ni `#vision` :
+
+- `components/sections/Chain.tsx` (#chaine) — 8 étapes (Idée→Croissance), section pin/scrub (GSAP ScrollTrigger) avec un trait-éclair vertical (`transform: scaleY`, pas de SVG path animé — plus robuste et strictement transform-only). Fallback statique (liste entièrement visible, pas de pin) si `prefers-reduced-motion` **ou** largeur < 768px.
+- `components/sections/UniverseBuild.tsx` (#build, registre clair) et `UniverseIntelligence.tsx` (#intelligence, registre cinématique sombre) — dégradé crème→noir en haut de la section INTELLIGENCE comme moment de transition narrative (doc 02), plus un `Bolt` `pulse` centré ("signal" qui traverse les univers).
+- `components/sections/GalleryPreview.tsx` (#realisations-preview) — jusqu'à 6 projets réels, CTA vers `/realisations`.
+- `components/sections/Stats.tsx`, `Process.tsx`, `Founder.tsx`, `Testimonials.tsx`, `CtaBand.tsx`.
+- `content/projects.ts`, `content/services.ts` — source unique typée (doc 08).
+- `components/ui/Card.tsx`, `Tag.tsx`, `StatCounter.tsx` — nouveaux composants réutilisables.
+
+### Données : ce qui a été rempli vs laissé en placeholder (doc J)
+
+- **12 projets publiés** (`published: true`) — uniquement ceux dont l'asset existe réellement dans `legacy-static/frontend/assets/` (liste exacte du doc 13-E). Les 6 projets sans asset (Top Hoops, Amely Paris, Tibaduiza Elí, NeuroAlchemy 75, STY Fashion, NZ-100) ne sont **pas** dans `content/projects.ts` — rien à publier tant que l'image manque.
+- **`sector`** : aucun secteur client n'est confirmé dans les docs fournis → valeur placeholder littérale `"[À_VÉRIFIER]"` sur les 12 projets plutôt qu'une supposition. **`url`**, **`year`**, **`tech`**, **`summary`** : laissés `undefined` (aucun lien/date/techno réels connus) — pas de faux lien `target="_blank"`.
+- **`universe`** : déduit du libellé déjà donné par le doc 09 lui-même (suffixe « site » → livrable BUILD ; « MA1 **IA** » → seul projet explicitement qualifié IA → INTELLIGENCE), pas une supposition sur l'activité du client.
+- **Chiffres clés (`Stats`)** : `StatCounter` est fonctionnel (compte-up GSAP prêt) mais aucune valeur n'est passée → chaque tuile affiche `[À_VÉRIFIER]` sans animation, comme demandé (doc D.5/J).
+- **Fondateur/équipe** : `Damien-Portfolio.png` et `Sandrine-Portfolio.png` existent dans `legacy-static/frontend/assets/` mais le doc 09 les marque « usage à confirmer » — impossible de garantir qu'il s'agit de portraits utilisables. Un bloc neutre + note `[À_FOURNIR]` est affiché plutôt que de risquer un mauvais usage d'une photo (doc D.7/J).
+- **Témoignages** : aucun contenu réel fourni → section placeholder explicite `[À_FOURNIR]`, aucun avis ni logo fabriqué (doc D.8/J).
+- **CTA de conversion** : mêmes coordonnées placeholder que le Footer existant (`+33 6 00 00 00 00`, `contact@damcompany.com`), RDV/WhatsApp signalés « à venir » — pas de lien fabriqué.
+
+### Bug trouvé et corrigé pendant les tests
+
+**Débordement horizontal à 1280px** (`scrollWidth` 1543 vs `innerWidth` 1280) : la valeur placeholder `"[À_VÉRIFIER]"` dans `StatCounter`, rendue à la taille `--fs-h1` (prévue pour un vrai chiffre court comme « 120+ »), débordait de sa colonne de grille (les items de grille ont un `min-width: auto` par défaut qui respecte la largeur intrinsèque du texte). Corrigé par `min-width: 0` sur `.stat` et une classe `.placeholder` (taille réduite `--fs-h3`) appliquée uniquement quand `value` est absent — `components/ui/StatCounter.module.css`, `StatCounter.tsx`. Revérifié : 0 débordement à 320px et 1280px après correctif.
+
+### Ajustement technique à `Bolt.tsx` (déjà existant, Phase 2)
+
+Le variant `spark` faisait un `gsap.set(fillOpacity: 0, scale: 0.9, ...)` qui laissait le tracé invisible même quand le wrapper CSS (`Card.module.css .spark`) passe à `opacity: 1` au hover — les deux mécanismes (GSAP inline + CSS) se contredisaient. Simplifié : le variant `spark` fixe juste un tracé pleinement visible (`fillOpacity: 1`) et laisse **uniquement** le CSS du composant appelant piloter l'apparition/disparition au hover/focus (`transform`/`opacity`, doc H). Changement additif, ne modifie ni `trace` ni `pulse` (Loader/Header/Footer/Hero non affectés).
+
+### Limite de test rencontrée (environnement, pas le code)
+
+Le panneau navigateur de cette session ne compose pas de frame visible (`document.hidden === true`, `requestAnimationFrame` ne se déclenche jamais tant que la page n'est pas rendue à l'écran). Conséquence : impossible de vérifier en direct, par scroll simulé, le pin/scrub de la Chaîne, le compte-up de `StatCounter`, ou les pulsations `Bolt` — tout ce qui dépend de `requestAnimationFrame` (GSAP ticker, Lenis, ScrollTrigger) reste à `progress: 0` dans cet environnement précis, indépendamment du code. Vérifié à la place :
+- Le `ScrollTrigger` se crée avec les bonnes bornes (`start`/`end` correspondant exactement à la position réelle du pin-spacer dans le DOM — confirmé par instrumentation temporaire retirée avant commit).
+- Le fallback reduced-motion/mobile (aucune dépendance à rAF) fonctionne : à 320px, les 8 étapes de la chaîne sont toutes visibles et actives sans JS d'animation.
+- Un `ScrollTrigger.refresh()` différé (double `requestAnimationFrame` + événement `load`) a été ajouté dans `Chain.tsx` par précaution, pour recaler le pin si des images chargées en lazy plus bas dans la page décalent la mise en page après le calcul initial — bonne pratique générale, indépendante du problème d'environnement.
+- **Recommandation :** vérifier le scroll de la Chaîne, la transition BUILD→INTELLIGENCE et les compteurs dans un vrai navigateur avant validation (`npm run dev`, scroller manuellement).
+
+### Tests exécutés
+
+- `npx tsc --noEmit` → 0 erreur.
+- `npm run lint` → 0 erreur/avertissement.
+- `npm run build` → succès, mêmes 7 routes, même avertissement `metadataBase` non bloquant.
+- Navigateur : 0 erreur console sur `/` (chargement + scroll jusqu'en bas) ; 13 images, 0 cassée ; **aucun scroll horizontal 320px→1280px** (après correctif `StatCounter`) ; nav clavier toujours fonctionnelle (Header/MobileNav inchangés) ; fallback reduced-motion de la Chaîne vérifié fonctionnel.

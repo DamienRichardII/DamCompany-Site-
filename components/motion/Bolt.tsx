@@ -62,7 +62,9 @@ export function Bolt({ variant = "pulse", className, active = true, onTraceCompl
           yoyo: true,
         });
       } else if (variant === "spark") {
-        gsap.set(path, { fillOpacity: 0, strokeDashoffset: 0, scale: 0.9, transformOrigin: "50% 50%" });
+        // Statique : la visibilité/l'échelle au hover sont pilotées en CSS
+        // par le composant appelant (transform/opacity uniquement).
+        gsap.set(path, { fillOpacity: 1, strokeDashoffset: 0 });
       }
     }, path);
 
