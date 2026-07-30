@@ -11,13 +11,16 @@ type ButtonProps = {
   children: ReactNode;
   variant?: "primary" | "secondary";
   className?: string;
+  /** Pour les liens externes réels (doc 12/14) : "_blank" + rel="noopener". */
+  target?: "_blank";
+  rel?: string;
 };
 
 /**
  * CTA avec micro-interaction "bouton magnétique" (doc 07) : léger suivi du
  * curseur au hover, desktop uniquement, coupé si reduced-motion.
  */
-export function Button({ href, children, variant = "primary", className }: ButtonProps) {
+export function Button({ href, children, variant = "primary", className, target, rel }: ButtonProps) {
   const ref = useRef<HTMLAnchorElement>(null);
   const reducedMotion = useReducedMotion();
 
@@ -41,6 +44,8 @@ export function Button({ href, children, variant = "primary", className }: Butto
     <Link
       ref={ref}
       href={href}
+      target={target}
+      rel={rel}
       className={`${styles.button} ${styles[variant]} ${className ?? ""}`}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}

@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import styles from "./Card.module.css";
 import { Tag } from "./Tag";
 import { Bolt } from "../motion/Bolt";
@@ -7,11 +8,13 @@ import type { Project } from "@/content/projects";
 /**
  * Carte projet : nom + secteur toujours visibles (jamais portés uniquement
  * par le hover, doc 06/12) ; hover/focus n'ajoute qu'un zoom d'image et un
- * éclair décoratif.
+ * éclair décoratif. Chaque carte ouvre l'étude de cas du projet (doc 14) ;
+ * le lien externe éventuel (project.url) vit dans la page d'étude de cas,
+ * pas ici, pour éviter d'imbriquer deux liens.
  */
 export function Card({ project }: { project: Project }) {
-  const content = (
-    <>
+  return (
+    <Link href={`/realisations/${project.slug}`} className={styles.card}>
       <div className={styles.imageWrap}>
         <Image
           src={project.cover}
@@ -26,22 +29,6 @@ export function Card({ project }: { project: Project }) {
         <span className={styles.name}>{project.name}</span>
         <Tag>{project.sector}</Tag>
       </div>
-    </>
+    </Link>
   );
-
-  if (project.url) {
-    return (
-      <a
-        href={project.url}
-        target="_blank"
-        rel="noopener"
-        className={styles.card}
-        aria-label={`Voir le projet ${project.name} (nouvel onglet)`}
-      >
-        {content}
-      </a>
-    );
-  }
-
-  return <div className={styles.card}>{content}</div>;
 }

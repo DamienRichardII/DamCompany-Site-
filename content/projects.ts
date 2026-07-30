@@ -30,6 +30,15 @@ export type Project = {
   /** Résultats chiffrés — vide tant qu'aucun résultat vérifié n'est fourni. */
   results: string[];
   published: boolean;
+  // Champs étude de cas (Phase 4, doc 14-D.1) — tous optionnels : renseignés
+  // uniquement si factuels, sinon absents (le bloc correspondant est masqué
+  // côté UI plutôt que rempli d'un placeholder visible).
+  /** Captures desktop/mobile supplémentaires — assets réels uniquement. */
+  gallery?: StaticImageData[];
+  context?: string;
+  solution?: string;
+  features?: string[];
+  artDirection?: string;
 };
 
 const SECTOR_PLACEHOLDER = "[À_VÉRIFIER]";
@@ -158,3 +167,21 @@ export const PROJECTS: Project[] = [
 ];
 
 export const PUBLISHED_PROJECTS = PROJECTS.filter((project) => project.published);
+
+export function getProjectBySlug(slug: string): Project | undefined {
+  return PUBLISHED_PROJECTS.find((project) => project.slug === slug);
+}
+
+export function getProjectsByUniverse(universe?: Universe): Project[] {
+  if (!universe) return PUBLISHED_PROJECTS;
+  return PUBLISHED_PROJECTS.filter((project) => project.universe === universe);
+}
+
+export function getAdjacentProjects(slug: string): { prev?: Project; next?: Project } {
+  const index = PUBLISHED_PROJECTS.findIndex((project) => project.slug === slug);
+  if (index === -1) return {};
+
+  const prev = PUBLISHED_PROJECTS[(index - 1 + PUBLISHED_PROJECTS.length) % PUBLISHED_PROJECTS.length];
+  const next = PUBLISHED_PROJECTS[(index + 1) % PUBLISHED_PROJECTS.length];
+  return { prev, next };
+}

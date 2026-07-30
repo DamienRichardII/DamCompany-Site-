@@ -1,0 +1,52 @@
+.hero {
+  background: var(--dc-bg-cine);
+  color: var(--dc-fg-invert);
+  padding-block: var(--space-16) var(--space-12);
+}
+
+.eyebrowRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: rgba(244, 244, 244, 0.7);
+  font-size: var(--fs-small);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--space-4);
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: var(--fs-hero);
+  line-height: var(--lh-tight);
+  font-weight: 600;
+  margin-bottom: var(--space-8);
+  max-width: 20ch;
+}
+
+.coverWrap {
+  position: relative;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--sh-cine);
+}
+
+.cover {
+  width: 100%;
+  height: auto;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: rgba(244, 244, 244, 0.7);
+  text-decoration: none;
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-8);
+}
+
+.backLink:hover,
+.backLink:focus-visible {
+  color: var(--dc-accent);
+}

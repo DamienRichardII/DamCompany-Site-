@@ -9,9 +9,11 @@ type PageSeoInput = {
   title: string;
   description: string;
   path?: string;
+  /** Image OG réelle (ex. cover d'un projet) — défaut : logo de marque. */
+  image?: string;
 };
 
-export function buildMetadata({ title, description, path = "/" }: PageSeoInput): Metadata {
+export function buildMetadata({ title, description, path = "/", image }: PageSeoInput): Metadata {
   const fullTitle = title === SITE_NAME ? title : `${title} | ${SITE_NAME}`;
 
   return {
@@ -23,7 +25,7 @@ export function buildMetadata({ title, description, path = "/" }: PageSeoInput):
       url: `${SITE_URL}${path}`,
       siteName: SITE_NAME,
       type: "website",
-      images: ["/brand/logo.svg"],
+      images: [image ?? "/brand/logo.svg"],
     },
   };
 }

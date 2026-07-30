@@ -1,7 +1,8 @@
 # Journal d'exécution — Refonte immersive DamCompany
 
-> Journal de bord de l'exécution des prompts `13-prompt-execution-claude-code.md` (Phase 0-2)
-> et `14-prompt-execution-phase3.md` (Phase 3). Mis à jour au fil de l'exécution, dans l'ordre chronologique.
+> Journal de bord de l'exécution des prompts `13-prompt-execution-claude-code.md` (Phase 0-2),
+> `14-prompt-execution-phase3.md` (Phase 3) et `15-prompt-execution-phase4.md` (Phase 4).
+> Mis à jour au fil de l'exécution, dans l'ordre chronologique.
 
 ---
 
@@ -144,3 +145,57 @@ Le panneau navigateur de cette session ne compose pas de frame visible (`documen
 - `npm run lint` → 0 erreur/avertissement.
 - `npm run build` → succès, mêmes 7 routes, même avertissement `metadataBase` non bloquant.
 - Navigateur : 0 erreur console sur `/` (chargement + scroll jusqu'en bas) ; 13 images, 0 cassée ; **aucun scroll horizontal 320px→1280px** (après correctif `StatCounter`) ; nav clavier toujours fonctionnelle (Header/MobileNav inchangés) ; fallback reduced-motion de la Chaîne vérifié fonctionnel.
+
+---
+
+## Phase 4 — Études de cas (2026-07-30)
+
+### Ce qui a été construit
+
+- **`content/projects.ts`** : type `Project` étendu avec 5 champs **optionnels** (`gallery?`, `context?`, `solution?`, `features?`, `artDirection?`) — rétro-compatible, `PROJECTS`/`PUBLISHED_PROJECTS` inchangés. Ajout de 3 helpers : `getProjectBySlug`, `getProjectsByUniverse`, `getAdjacentProjects` (précédent/suivant, boucle circulaire).
+- **`lib/seo.ts`** : `buildMetadata` accepte désormais un paramètre optionnel `image` (sinon comportement identique, `/brand/logo.svg` par défaut) — utilisé pour l'OG des études de cas (`project.cover.src`).
+- **`app/realisations/page.tsx`** : remplace le `ComingSoon`. Galerie complète des 12 projets publiés + filtre par univers (`components/ui/FilterTabs.tsx`).
+- **`app/realisations/[slug]/page.tsx`** : `generateStaticParams` (12 pages générées en SSG), `generateMetadata` par projet, `notFound()` si slug inconnu. Composé de `CaseStudyHero`, `CaseStudyContent` (7 blocs conditionnels), `CaseStudyNav` (précédent/suivant).
+
+### Décision technique : filtre en liens, pas en état client
+
+Le doc 14-D.2 proposait explicitement deux options (« liens/param ou affichage complet par défaut »). Choix retenu : **liens réels** (`/realisations?universe=build`), `FilterTabs` reste un Server Component. Avantages par rapport à un filtre `'use client'` : chaque état est une URL crawlable/partageable, le filtre fonctionne nativement sans JavaScript (pas de "fallback" à construire, c'est le comportement par défaut), et ça évite d'ajouter un composant client supplémentaire. État actif signalé par `aria-current="true"` + style visuel — l'équivalent fonctionnel d'`aria-pressed` demandé dans le prompt, adapté à des liens plutôt qu'à des boutons de bascule (sémantiquement plus correct pour une navigation par facette).
+
+### Modifications à des composants partagés (justifiées, hors périmètre protégé)
+
+- **`components/ui/Card.tsx`** : chaque carte projet pointe désormais vers `/realisations/[slug]` (au lieu de : lien externe `project.url` si présent, sinon `<div>` statique). C'est le cœur de l'objectif Phase 4 (« transformer les réalisations en preuves ») et ça se répercute correctement sur les sections Phase 3 qui réutilisent `Card` (Chain, UniverseBuild, UniverseIntelligence, GalleryPreview) sans qu'elles aient été modifiées elles-mêmes — vérifié : 10 liens `/realisations/*` détectés sur la homepage après le changement, 0 régression. Le lien externe (`project.url`), quand il existe, vit désormais dans le corps de l'étude de cas (bloc « Le site »), pas sur la carte — évite un anchor imbriqué dans un anchor.
+- **`components/ui/Button.tsx`** : ajout de deux props optionnelles `target`/`rel` (pour le lien externe « Visiter le site »), sans effet sur les appels existants qui ne les passent pas.
+- **`components/motion/Reveal.tsx`, `Bolt.tsx`, `Header`, `MobileNav`, `Loader`, `Hero`, fondations, tokens** : **non touchés**, conformément au périmètre protégé (doc 14-E).
+
+### Données : rien d'inventé (doc I)
+
+Les 5 nouveaux champs (`context`, `solution`, `features`, `artDirection`, `gallery`) sont restés `undefined` sur les **12 projets** — aucun contenu factuel n'a été fourni au-delà de ce qui existait déjà en Phase 3 (nom, univers, capture). Conséquence assumée et documentée dans le prompt lui-même : chaque étude de cas reste **sobre** (hero + cover + navigation précédent/suivant), `CaseStudyContent` retourne `null` dès qu'aucun des 8 blocs n'a de donnée — vérifié dans le navigateur sur `/realisations/ma1-ia` : rien entre le hero et la nav précédent/suivant, aucune section vide affichée.
+
+#### Tableau des champs manquants par projet
+
+Identique pour les 12 projets publiés (aucune donnée différenciée fournie) :
+
+| Champ | État | Action requise |
+|---|---|---|
+| `sector` | `"[À_VÉRIFIER]"` | Secteur réel du client |
+| `url` | absent | Lien réel vers le site livré (si autorisé à publier) |
+| `year` | absent | Année de livraison |
+| `tech` | absent | Stack technique réellement utilisée |
+| `context` / `solution` | absents | 1-2 phrases besoin/solution par projet |
+| `features` | absent | Liste de fonctionnalités clés |
+| `artDirection` | absent | Parti pris DA en une phrase |
+| `gallery` | absent | Captures desktop/mobile supplémentaires (aucune actuellement disponible au-delà de la cover unique par projet dans `legacy-static/`) |
+| `results` | `[]` | Résultats chiffrés vérifiés |
+
+*(Les 6 projets sans asset — Top Hoops, Amely Paris, Tibaduiza Elí, NeuroAlchemy 75, STY Fashion, NZ-100 — restent absents de `content/projects.ts`, inchangé depuis la Phase 3.)*
+
+### Tests exécutés
+
+- `npx tsc --noEmit` → 0 erreur. `npm run lint` → 0 erreur/avertissement.
+- `npm run build` → succès. **20 pages générées** (7 précédentes + `/realisations` en rendu dynamique `ƒ` car dépend de `searchParams` + 12 études de cas en SSG `●` via `generateStaticParams`).
+- Navigateur : 0 erreur console sur `/realisations`, `/realisations?universe=intelligence` (filtre confirmé : seul MA1 IA affiché), `/realisations/ma1-ia`.
+- **404 réel vérifié** : `GET /realisations/does-not-exist` → `404 Not Found` (statut HTTP confirmé via les requêtes réseau, pas seulement un texte affiché).
+- **320px→1280px** : aucun scroll horizontal sur `/realisations` ni sur une étude de cas (`/realisations/kingbrel`).
+- **Clavier** : filtre et cartes sont des `<a>` natifs, focusables et activables au clavier par construction (pas de `tabindex` custom nécessaire).
+- **Homepage (régression)** : revérifiée après les changements sur `Card`/`Button` — 0 erreur console, 0 scroll horizontal, toujours fonctionnelle.
+- **`prefers-reduced-motion`** : même limite d'environnement que documentée en Phase 3 (rAF suspendu, pane non composité) — vérifié par revue de code : `CaseStudyHero`/`CaseStudyContent` utilisent `Reveal`, déjà validé reduced-motion-safe en Phase 2/3.
