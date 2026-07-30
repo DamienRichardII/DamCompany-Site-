@@ -9,7 +9,10 @@
   font-family: var(--font-display);
   font-size: var(--fs-h1);
   font-weight: 600;
-  color: var(--dc-accent);
+  /* Jaune = contraste insuffisant sur le fond clair de la section Stats
+     (doc 06 / _journal.md Phase 6) ; ce composant peut aussi être réutilisé
+     tel quel sur un fond sombre grâce à `inherit`. */
+  color: inherit;
   overflow-wrap: break-word;
 }
 

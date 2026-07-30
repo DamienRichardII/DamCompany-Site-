@@ -37,7 +37,9 @@
 .index {
   font-family: var(--font-display);
   font-size: var(--fs-h3);
-  color: var(--dc-accent);
+  /* Jaune sur fond clair = contraste insuffisant (doc 06 / _journal.md
+     Phase 6) : on garde la hiérarchie visuelle via la taille, pas la couleur. */
+  color: var(--dc-fg-muted);
   min-width: 3ch;
 }
 

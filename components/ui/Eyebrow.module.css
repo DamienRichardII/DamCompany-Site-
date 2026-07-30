@@ -6,7 +6,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--dc-accent);
+  /* Hérite du texte du parent : le jaune ne sert jamais de couleur de texte
+     sur fond clair (doc 06). L'accent reste porté par le trait ci-dessous. */
+  color: inherit;
 }
 
 .eyebrow::before {

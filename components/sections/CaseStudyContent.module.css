@@ -24,7 +24,9 @@
   letter-spacing: 0.08em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--dc-accent);
+  /* Jaune = contraste insuffisant sur ce fond clair (doc 06 / _journal.md
+     Phase 6) ; l'accent reste porté par le trait ::before. */
+  color: inherit;
   margin-bottom: var(--space-4);
 }
 

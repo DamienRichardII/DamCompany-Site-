@@ -1,8 +1,8 @@
 # Journal d'exécution — Refonte immersive DamCompany
 
 > Journal de bord de l'exécution des prompts `13-prompt-execution-claude-code.md` (Phase 0-2),
-> `14-prompt-execution-phase3.md` (Phase 3) et `15-prompt-execution-phase4.md` (Phase 4).
-> Mis à jour au fil de l'exécution, dans l'ordre chronologique.
+> `14-prompt-execution-phase3.md` (Phase 3), `15-prompt-execution-phase4.md` (Phase 4)
+> et `16-prompt-execution-phase6.md` (Phase 6). Mis à jour au fil de l'exécution, dans l'ordre chronologique.
 
 ---
 
@@ -199,3 +199,89 @@ Identique pour les 12 projets publiés (aucune donnée différenciée fournie) :
 - **Clavier** : filtre et cartes sont des `<a>` natifs, focusables et activables au clavier par construction (pas de `tabindex` custom nécessaire).
 - **Homepage (régression)** : revérifiée après les changements sur `Card`/`Button` — 0 erreur console, 0 scroll horizontal, toujours fonctionnelle.
 - **`prefers-reduced-motion`** : même limite d'environnement que documentée en Phase 3 (rAF suspendu, pane non composité) — vérifié par revue de code : `CaseStudyHero`/`CaseStudyContent` utilisent `Reveal`, déjà validé reduced-motion-safe en Phase 2/3.
+
+---
+
+## Phase 6 — Optimisation & mise en production (2026-07-30)
+
+### 1. SEO — métadonnées
+
+- `app/layout.tsx` : `metadataBase: new URL(SITE_URL)` défini une seule fois (racine) → **le warning `metadataBase` a disparu du build**. `title` devient `{ default: "DamCompany", template: "%s — DamCompany" }` (tiret cadratin, doc 16-D.1) ; toutes les pages enfants (déjà écrites avec `buildMetadata({title: "Réalisations", ...})` etc., Phases 2-4) en bénéficient automatiquement sans modification.
+- `lib/seo.ts` : `SITE_URL` lit désormais `process.env.NEXT_PUBLIC_SITE_URL` avec repli `http://localhost:3000` — **l'ancien placeholder `"https://[URL_PROD]"` a été retiré** (il n'était de toute façon pas une URL valide pour `new URL()`, qui aurait fait planter le build). `buildMetadata` ajoute `alternates.canonical` et `twitter: { card: "summary_large_image", ... }`.
+- **OG image réelle produite** : `public/brand/og.webp` (1200×630, 10,7 Ko), générée à partir du logo et des tokens de marque via `scripts/generate-og-image.mjs` (`npm run generate-og-image`) — logo + éclair + accroche déjà utilisée dans le Hero (« Agence digitale — Build & Intelligence »). Pas de photo définitive fournie à ce stade (doc 16-H) : ce script reste réutilisable pour régénérer l'image si la DA évolue, ou peut être remplacé par un vrai visuel plus tard sans changer le code (`lib/seo.ts` pointe simplement vers `/brand/og.webp`).
+- Chaque étude de cas utilise sa propre `cover` comme image OG (`image: project.cover.src`, déjà en place depuis la Phase 4, vérifié fonctionnel avec le nouveau `metadataBase`).
+
+### 2. SEO — fichiers
+
+- `app/sitemap.ts` : 5 routes statiques + les 13 études de cas publiées (`PUBLISHED_PROJECTS`) = **18 URLs** (vérifié : `curl .../sitemap.xml | grep -c '<loc>'` → 18).
+- `app/robots.ts` : `allow: "/"`, référence `sitemap.xml`. JSON-LD (P2, optionnel) non fait — aurait nécessité soit des données Organization non fournies (adresse, réseaux réels), soit un contenu de type Article non structuré comme tel dans les études de cas ; laissé de côté plutôt que de fabriquer des données.
+
+### 3. Redirections 301
+
+`next.config.ts` → `redirects()`, les 9 URLs `.html` → nouvelle arborescence, `permanent: true`. **Vérifié via `curl`** sur les 9 URLs : toutes renvoient **308** (pas 301). C'est le comportement standard de Next.js pour `permanent: true` — un 308 préserve la méthode de requête et est traité de façon identique à un 301 par Google pour le transfert de signal SEO (redirection permanente). Signalé ici pour transparence par rapport au « 301 » demandé littéralement dans le prompt.
+
+### 4. Performance — images
+
+- Audit `next/image` : `priority` correctement limité aux candidats LCP réels (1ère image du Hero, cover du hero d'étude de cas, logo du header) ; tout le reste en lazy par défaut. Formats AVIF/WebP : activés nativement par Next.js (comportement par défaut de l'optimiseur d'image, aucune config requise) — vérifié via les requêtes réseau (`_next/image?...`) qui servent déjà des formats optimisés quelle que soit la source.
+- **Recompression source** : `scripts/optimize-images.mjs` (`npm run optimize-images`), `sharp` ajouté en devDependency (déjà présent en transitif via Next, désormais déclaré explicitement — doc 16-F). Quantification palette (`png({ palette: true, quality: 82 })`), qualité vérifiée visuellement avant application en masse (aucune différence perceptible sur une capture de site). **10 fichiers > 500 Ko traités, ~12,6 Mo → ~3,3 Mo (-74 % sur ces fichiers)** :
+
+| Fichier | Avant | Après | Gain |
+|---|---|---|---|
+| reset-smp-site.png | 1853 Ko | 317 Ko | -83% |
+| Divan-Grill-site.png | 1541 Ko | 298 Ko | -81% |
+| Fly-future-champions-site.png | 646 Ko | 152 Ko | -76% |
+| Sandrine-Portfolio.png | 1152 Ko | 283 Ko | -75% |
+| Africa2kball-site.png | 1680 Ko | 455 Ko | -73% |
+| Damien-Portfolio.png | 565 Ko | 155 Ko | -73% |
+| ICP-site.png | 777 Ko | 172 Ko | -78% |
+| Nad-motivation-site.png | 1494 Ko | 451 Ko | -70% |
+| Ubodrop-site.png | 1956 Ko | 640 Ko | -67% |
+| Kingbrel-site.png | 930 Ko | 335 Ko | -64% |
+
+  Les fichiers écrasés sont ceux importés par `content/projects.ts` (aucun changement de code nécessaire, les imports statiques pointent vers le même chemin). **Les originaux sont conservés** dans `legacy-static/frontend/assets-originaux/` (créé automatiquement par le script) — **ce dossier est volontairement exclu de git** (`.gitignore`) pour ne pas doubler ~12 Mo de binaires dans l'historique ; il reste disponible en local. Recommandation : archiver ce dossier ailleurs (stockage cloud du client) si une trace long terme des fichiers sources est souhaitée.
+- Code-splitting : GSAP/Lenis/Framer restent `'use client'` uniquement dans les composants qui les utilisent réellement (motion/, sections animées) ; les pages ComingSoon et les Server Components n'embarquent aucun JS d'animation.
+
+### 5. Accessibilité — audit final (bugs réels trouvés et corrigés)
+
+Un script de scan automatisé (calcul de contraste WCAG, injecté via `javascript_tool` sur chaque type de page) a révélé **plusieurs violations réelles**, au-delà de ce qui avait été vérifié visuellement dans les phases précédentes :
+
+1. **Texte jaune sur fond clair (contraste 1,44:1, minimum requis 4,5:1)** — le jaune de marque servait de couleur de TEXTE dans `Eyebrow`, `Tag`, `CaseStudyContent .blockLabel`, `Chain .stepIndex` (actif), `Process .index` et `StatCounter .value`, sur les sections à registre clair (BUILD, Process, Founder, Testimonials, Chain, Réalisations, études de cas). C'est exactement l'inverse de la règle déjà documentée dans `styles/tokens.css` depuis la Phase 1 (« le jaune ne sert jamais de couleur de texte sur fond clair ») — règle respectée à l'écriture des tokens mais pas suivie dans les composants ajoutés en Phases 3-4. **Corrigé** : `Eyebrow`/`CaseStudyContent .blockLabel`/`StatCounter .value` passent en `color: inherit` (s'adaptent au registre du parent) ; `Chain .stepIndex` (actif) devient une pastille jaune à texte noir ; `Process .index` passe en gris neutre ; `Tag` devient une pastille à fond clair opaque + texte noir + bordure jaune (fonctionne quel que soit le fond de page, y compris sombre).
+2. **Texte noir sur fond noir (contraste 1,14:1)** — le bouton secondaire « Voir nos réalisations » du Hero utilisait `color: var(--dc-fg)` (toujours sombre) alors que ce variant est aussi utilisé sur fond sombre (Hero) : texte quasi invisible. **Corrigé** : `Button.secondary` passe en `color: inherit`.
+3. **Texte blanc sur carte blanche (contraste ~1:1)** — les cartes projet (`Card`) utilisaient `color: inherit` pour le nom du projet, correct sur fond clair mais invisible quand la carte est posée sur une section au registre sombre (Univers INTELLIGENCE, ex. « MA1 IA ») car la carte garde son propre fond clair. **Corrigé** : `Card` fixe désormais `color: var(--dc-black)`, indépendant du contexte.
+
+Tous les correctifs vérifiés par re-scan automatisé (0 violation restante sur `/`, `/realisations`, une étude de cas, `/services`, `/contact`, le menu mobile et le footer) + lecture directe des couleurs calculées (`getComputedStyle`). `tsc`/`lint`/`build` revalidés après ces changements.
+
+**Reste (limite d'outillage, pas un problème de code)** : `prefers-reduced-motion` non émulable en direct dans ce navigateur (même limite que Phases 2-3, `document.hidden === true`), vérifié par revue de code uniquement.
+
+### 6. QA multi-supports + Lighthouse
+
+- **320px → 1920px** : `scrollWidth === innerWidth` vérifié sur `/`, `/realisations`, une étude de cas, `/contact`, `/services` — 0 scroll horizontal, 0 erreur console sur l'ensemble.
+- **Navigateurs** : seul un moteur Chromium est disponible dans cet environnement d'exécution — **Safari (macOS/iOS), Firefox et Android réels n'ont pas pu être testés**. Points à vérifier manuellement en priorité avant mise en production : le `backdrop-filter: blur()` du header (support Safari correct mais à confirmer visuellement), le pin GSAP/ScrollTrigger de la section Chaîne (comportement de scroll parfois différent sur Safari iOS), et Lenis sur Android (interaction tactile).
+- **Lighthouse mobile** (`next build` + `next start`, mesure sur le build de production, pas le serveur de dev) :
+
+| Page | Perf | A11y | BP | SEO | LCP | CLS |
+|---|---|---|---|---|---|---|
+| `/` | **91** | **98** | **100** | **100** | 3,1 s | 0 |
+| `/realisations/ubo-drop` | **93** | **100** | **100** | **100** | 3,1 s | 0 |
+
+  **Tous les scores catégorie dépassent les objectifs** (Perf ≥85, A11y ≥95, BP ≥95, SEO ≥100). **CLS = 0** (objectif <0,1, largement atteint — les dimensions d'image sont bien réservées partout).
+  **LCP = 3,1 s, au-dessus de l'objectif <2,5 s.** Diagnostic : le breakdown Lighthouse attribue l'essentiel du dépassement au travail JS du thread principal (~3,2 s simulé sur CPU mobile throttlé — GSAP/Lenis/ScrollTrigger + plusieurs contextes `Reveal` s'initialisant au chargement du Hero), pas à un problème réseau (TTFB 13 ms). **Ce goulot est structurel au système de motion des sections Hero/homepage**, que le périmètre de cette Phase 6 (doc 16-E) interdit explicitement de modifier (« À NE PAS TOUCHER : … hero, motion »). Non corrigé ici par respect du périmètre — recommandation pour une phase dédiée : différer l'initialisation de `ScrollTrigger` pour les sections hors-écran, réduire le nombre de contextes `Reveal` simultanés au premier rendu du Hero, ou lazy-charger `gsap/ScrollTrigger` séparément du cœur `gsap`/`Reveal`.
+
+### 7. Préparation déploiement Vercel
+
+- `.env.example` créé à la racine : `NEXT_PUBLIC_SITE_URL` (documentée, obligatoire pour un `metadataBase` correct en prod) + variables Resend en commentaire (formulaire de contact non encore branché, Phase 3+ future).
+- **`npm run build` final : 0 erreur, 0 warning** (le warning `metadataBase` a disparu). `tsc --noEmit` et `npm run lint` : 0 erreur.
+
+#### Procédure de déploiement (à exécuter par l'utilisateur — aucune action déclenchée ici)
+
+1. Fusionner `feat/refonte-immersive` dans `main` (revue humaine recommandée avant fusion — cette branche n'a jamais touché `main` directement, conformément aux garde-fous de toutes les phases).
+2. Sur [vercel.com](https://vercel.com), connecter le dépôt GitHub `DamCompany-Site-` (repo déjà existant, doc 00).
+3. Vercel détecte automatiquement Next.js (`package.json` à la racine) — aucune configuration de build spécifique nécessaire (`next build` standard).
+4. Dans les **Environment Variables** du projet Vercel, définir :
+   - `NEXT_PUBLIC_SITE_URL` = URL de production réelle (ex. `https://damcompany.com` une fois le domaine confirmé) — **actuellement inconnue, placeholder dans `.env.example`**.
+   - (Plus tard, quand le formulaire de contact sera branché) `RESEND_API_KEY`, `CONTACT_TO`, `CONTACT_FROM`.
+5. Configurer le domaine personnalisé dans **Settings → Domains** si un domaine autre que `*.vercel.app` est utilisé (DNS à pointer chez le registrar — étape hors de portée de cet outil).
+6. Déclencher le déploiement (automatique au push sur `main` une fois le repo connecté, ou déploiement manuel depuis le dashboard Vercel).
+7. Après premier déploiement : vérifier `/sitemap.xml`, `/robots.txt`, et soumettre le sitemap dans Google Search Console (nouvelle propriété si le domaine change).
+
+Aucune de ces étapes n'a été exécutée par Claude Code — elles impliquent un compte Vercel, un domaine et potentiellement un paiement, laissés à la décision de l'utilisateur (doc 16-D.7).

@@ -13,3 +13,7 @@ next-env.d.ts
 
 # vercel
 .vercel
+
+# copies des PNG originaux avant recompression (doc 16-D.4) — volumineux,
+# gardés en local uniquement, ne pas committer (voir _journal.md Phase 6)
+legacy-static/frontend/assets-originaux/

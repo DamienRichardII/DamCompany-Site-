@@ -30,7 +30,11 @@
 
 .secondary {
   background: transparent;
-  color: var(--dc-fg);
+  /* `inherit` plutôt qu'un token clair figé : ce variant est utilisé aussi
+     bien sur fond clair (GalleryPreview, CaseStudyContent) que sur fond
+     sombre (Hero) — un `--dc-fg` codé en dur y rendait le texte quasi
+     invisible (texte #1c1c1c sur fond #0d0d0d). Voir _journal.md Phase 6. */
+  color: inherit;
   border-color: var(--dc-border);
 }
 
