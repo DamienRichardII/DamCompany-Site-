@@ -1,0 +1,284 @@
+.root {
+  position: relative;
+}
+
+.srHeading {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* ---------- Aperçu compact (< 1040px) ---------- */
+
+.compact {
+  position: sticky;
+  top: 58px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 8px 10px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--r);
+  border: 1px solid var(--dc-border);
+  background: rgba(255, 253, 248, 0.94);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--sh-sm);
+}
+
+.thumb {
+  width: 84px;
+  flex: none;
+}
+
+.compactText {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.compactName {
+  font-weight: 600;
+  font-size: var(--fs-small);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.compactMeta {
+  font-size: 0.75rem;
+  color: var(--dc-fg-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Disposition ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+
+.panel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--dc-border);
+  border-radius: var(--r-lg);
+  background: var(--dc-cream-2);
+  box-shadow: var(--sh);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-4) var(--space-3);
+  border-bottom: 1px solid var(--dc-border);
+}
+
+.stepper {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 4px;
+}
+
+/* Mobile : étapes inactives réduites au numéro, l'étape active prend la place restante. */
+.stepper li {
+  flex: 0 0 auto;
+  min-width: 0;
+}
+
+.stepper li:has([aria-current="step"]) {
+  flex: 1 1 auto;
+}
+
+.stepButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 8px;
+  white-space: nowrap;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--dc-fg-muted);
+  font-size: var(--fs-small);
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease-standard), color var(--dur-fast) var(--ease-standard);
+}
+
+.stepButton:hover {
+  background: color-mix(in srgb, var(--dc-fg) 6%, transparent);
+}
+
+.stepButton[aria-current="step"] {
+  background: var(--dc-black);
+  color: #fff;
+}
+
+.stepNum {
+  width: 22px;
+  height: 22px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  background: color-mix(in srgb, var(--dc-fg) 10%, transparent);
+}
+
+.stepButton[aria-current="step"] .stepNum {
+  background: var(--dc-accent);
+  color: var(--dc-black);
+}
+
+.stepButton[data-done="true"] .stepNum {
+  background: var(--dc-accent);
+  color: var(--dc-black);
+}
+
+/* Sur petit écran seule l'étape active affiche son libellé */
+.stepLabel {
+  display: none;
+}
+
+.stepButton[aria-current="step"] .stepLabel {
+  display: inline;
+}
+
+.saved {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8125rem;
+  color: var(--dc-fg-muted);
+  min-height: 1.2rem;
+}
+
+.savedIcon {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #1d6b3a;
+  color: #fff;
+}
+
+.notice {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  align-items: flex-start;
+  margin: var(--space-3) var(--space-4) 0;
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--dc-accent) 20%, transparent);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.noticeClose {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.body {
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  scroll-margin-top: 130px;
+  min-width: 0;
+}
+
+/* Barre d'actions : reste visible en bas sans masquer les champs */
+.nav {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  padding: var(--space-3) var(--space-4) calc(var(--space-3) + env(safe-area-inset-bottom));
+  border-top: 1px solid var(--dc-border);
+  border-radius: 0 0 var(--r-lg) var(--r-lg);
+  background: rgba(255, 253, 248, 0.96);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.navMain {
+  display: flex;
+  gap: var(--space-2);
+  margin-left: auto;
+}
+
+.preview {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .stepper li,
+  .stepper li:has([aria-current="step"]) {
+    flex: 1 1 0;
+  }
+
+  .stepLabel {
+    display: inline;
+  }
+
+  .head,
+  .body,
+  .nav {
+    padding-inline: var(--space-6);
+  }
+
+  .notice {
+    margin-inline: var(--space-6);
+  }
+}
+
+@media (min-width: 1040px) {
+  .compact {
+    display: none;
+  }
+
+  .layout {
+    grid-template-columns: minmax(0, 1.05fr) minmax(420px, 0.95fr);
+    gap: var(--space-8);
+  }
+
+  .preview {
+    display: block;
+    position: sticky;
+    top: 92px;
+    max-height: calc(100dvh - 112px);
+    overflow-y: auto;
+    padding: var(--space-4);
+    border-radius: var(--r-lg);
+    background: color-mix(in srgb, var(--dc-fg) 3%, transparent);
+    border: 1px solid var(--dc-border);
+    scrollbar-width: thin;
+  }
+}

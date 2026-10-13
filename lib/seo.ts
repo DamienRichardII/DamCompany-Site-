@@ -7,10 +7,12 @@ const DEFAULT_DESCRIPTION =
 const DEFAULT_OG_IMAGE = "/brand/og.webp";
 
 /**
- * URL de production : fournie via NEXT_PUBLIC_SITE_URL (Vercel), sinon
- * repli localhost — jamais une URL fictive codée en dur (doc 16-H).
+ * URL de production : NEXT_PUBLIC_SITE_URL, sinon https://damcompany.tech en
+ * production et localhost en développement — jamais une URL fictive codée en dur (doc 16-H).
  */
-export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+export const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  (process.env.NODE_ENV === "production" ? "https://damcompany.tech" : "http://localhost:3000");
 
 type PageSeoInput = {
   /** Titre de page brut (ex. "Réalisations") — le suffixe " — DamCompany" est appliqué via le title.template du layout racine. */

@@ -1,17 +1,18 @@
 /* Design tokens — refonte immersive DamCompany (doc 06-direction-artistique.md) */
 
 :root {
-  /* Couleurs — reprise de l'identité existante */
-  --dc-cream: #faf7ef;
-  --dc-cream-2: #fffdf8;
-  --dc-black: #141414;
-  --dc-black-deep: #0d0d0d;
-  --dc-yellow: #ffc83d;
-  --dc-yellow-2: #ffd873;
-  --dc-text: #1c1c1c;
-  --dc-text-muted: #6b6b6b;
-  --dc-text-invert: #f4f4f4;
-  --dc-border: #ece7d8;
+  /* Couleurs — identité DamCompany : noir #0B0B0B, jaune #FEDD58, or #A9821A */
+  --dc-cream: #fbf9f4;
+  --dc-cream-2: #ffffff;
+  --dc-black: #0b0b0b;
+  --dc-black-deep: #0b0b0b;
+  --dc-yellow: #fedd58;
+  --dc-yellow-2: #ffe98a;
+  --dc-gold: #a9821a;
+  --dc-text: #121212;
+  --dc-text-muted: #66625a;
+  --dc-text-invert: #f7f5ee;
+  --dc-border: #ece7da;
 
   /* Sémantique */
   --dc-bg: var(--dc-cream);

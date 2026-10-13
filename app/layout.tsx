@@ -1,35 +1,35 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import "./globals.css";
 import { spaceGrotesk, poppins } from "@/lib/fonts";
 import { buildMetadata, SITE_URL } from "@/lib/seo";
-import { LenisProvider } from "@/components/motion/LenisProvider";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
 
 export const metadata: Metadata = {
   ...buildMetadata({
     title: "DamCompany",
     description:
-      "DamCompany — agence digitale : création de sites, applications, IA, data et automatisation. De l'idée au produit intelligent.",
+      "DamCompany, agence digitale à Aulnay-sous-Bois : sites internet, applications mobiles, IA, CRM 3D, reporting, motion design et supports de création.",
   }),
-  // Résout les URLs relatives (og:image, canonical) — défini une seule fois,
-  // ici, dans le layout racine (doc 16-D.1).
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: "DamCompany",
-    template: "%s — DamCompany",
-  },
+  title: { default: "DamCompany", template: "%s — DamCompany" },
+  applicationName: "DamCompany",
+  authors: [{ name: "DamCompany", url: SITE_URL }],
+};
+
+export const viewport: Viewport = {
+  themeColor: "#FBF9F4",
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr" className={`${spaceGrotesk.variable} ${poppins.variable}`}>
       <body>
-        <LenisProvider>
-          <Header />
-          {children}
-          <Footer />
-        </LenisProvider>
+        {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

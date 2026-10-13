@@ -1,0 +1,80 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.label {
+  font-size: var(--fs-small);
+  font-weight: 600;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #fff;
+  border: 1.5px solid var(--dc-border);
+  border-radius: var(--r-sm);
+  padding: 6px 10px 6px 6px;
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.controls:focus-within {
+  border-color: var(--dc-black);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--dc-accent) 55%, transparent);
+}
+
+.controls[data-invalid="true"] {
+  border-color: #b3261e;
+}
+
+.picker {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+}
+
+.picker::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+.picker::-webkit-color-swatch {
+  border: 1px solid rgba(20, 20, 20, 0.15);
+  border-radius: 8px;
+}
+
+.picker::-moz-color-swatch {
+  border: 1px solid rgba(20, 20, 20, 0.15);
+  border-radius: 8px;
+}
+
+.hex {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  color: var(--dc-fg);
+}
+
+.hex:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.error {
+  font-size: 0.8125rem;
+  color: #b3261e;
+  font-weight: 500;
+}
