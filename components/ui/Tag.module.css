@@ -1,0 +1,17 @@
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-3);
+  border-radius: 999px;
+  font-size: var(--fs-small);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  /* Pastille à contraste garanti quel que soit le registre (clair/sombre) du
+     fond de la page : fond clair opaque + texte noir, accent porté par la
+     bordure jaune uniquement (doc 06 : jamais de texte jaune sur fond clair,
+     et une bordure translucide n'offrirait pas de contraste fiable sur fond
+     sombre). Voir _journal.md Phase 6 (audit accessibilité). */
+  background: var(--dc-cream-2);
+  color: var(--dc-black);
+  border: 1px solid var(--dc-accent);
+}

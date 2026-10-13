@@ -1,0 +1,20 @@
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  /* Hérite du texte du parent : le jaune ne sert jamais de couleur de texte
+     sur fond clair (doc 06). L'accent reste porté par le trait ci-dessous. */
+  color: inherit;
+}
+
+.eyebrow::before {
+  content: "";
+  width: 14px;
+  height: 2px;
+  background: var(--dc-accent);
+  border-radius: 2px;
+}

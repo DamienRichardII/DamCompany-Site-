@@ -1,0 +1,149 @@
+.banner {
+  display: flex;
+  gap: var(--space-3);
+  align-items: flex-start;
+  padding: var(--space-4);
+  border-radius: var(--r);
+  font-size: var(--fs-small);
+  line-height: 1.5;
+}
+
+.banner[data-ready="true"] {
+  background: #e8f5ec;
+  color: #1d5a33;
+}
+
+.banner[data-ready="false"] {
+  background: #fff4dc;
+  color: #6a4a00;
+}
+
+.banner svg {
+  flex: none;
+  margin-top: 1px;
+}
+
+.issues {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+
+.issues li {
+  margin-top: 2px;
+}
+
+.link {
+  border: 0;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  color: inherit;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
+  gap: var(--space-3);
+}
+
+.card {
+  border: 1.5px solid var(--dc-border);
+  border-radius: var(--r);
+  background: #fff;
+  padding: var(--space-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.cardHead h4 {
+  font-size: 1rem;
+}
+
+.list {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.row {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: var(--fs-small);
+  min-width: 0;
+}
+
+.row dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--dc-fg-muted);
+}
+
+.row dd {
+  margin: 0;
+  font-weight: 500;
+  overflow-wrap: anywhere;
+}
+
+.swatches {
+  display: inline-flex;
+  gap: 6px;
+}
+
+.swatches span {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(20, 20, 20, 0.15);
+}
+
+.qr {
+  border: 1.5px dashed var(--dc-border);
+  border-radius: var(--r);
+  padding: var(--space-4);
+  background: color-mix(in srgb, var(--dc-accent) 8%, #fff);
+}
+
+.qrTitle {
+  font-weight: 600;
+  font-size: var(--fs-small);
+  margin-bottom: var(--space-3);
+}
+
+.qrGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  font-size: 0.8125rem;
+  color: var(--dc-fg-muted);
+  line-height: 1.5;
+}
+
+.qrGrid strong {
+  display: block;
+  color: var(--dc-fg);
+  font-size: var(--fs-small);
+  margin-bottom: 2px;
+}
+
+@media (min-width: 620px) {
+  .qrGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}

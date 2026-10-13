@@ -1,0 +1,94 @@
+.content {
+  background: var(--dc-bg);
+  color: var(--dc-fg);
+  padding-block: var(--space-16);
+}
+
+.blocks {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+  max-width: 720px;
+}
+
+.block {
+  padding-top: var(--space-8);
+  border-top: 1px solid var(--dc-border);
+}
+
+.blockLabel {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--fs-eyebrow);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  /* Jaune = contraste insuffisant sur ce fond clair (doc 06 / _journal.md
+     Phase 6) ; l'accent reste porté par le trait ::before. */
+  color: inherit;
+  margin-bottom: var(--space-4);
+}
+
+.blockLabel::before {
+  content: "";
+  width: 12px;
+  height: 2px;
+  background: var(--dc-accent);
+  border-radius: 2px;
+}
+
+.blockText {
+  color: var(--dc-fg);
+  max-width: 62ch;
+  line-height: var(--lh-body);
+}
+
+.pillList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.resultsList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.resultsList li {
+  padding-left: var(--space-6);
+  position: relative;
+}
+
+.resultsList li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.6em;
+  width: 10px;
+  height: 2px;
+  background: var(--dc-accent);
+}
+
+.gallery {
+  max-width: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: var(--space-6);
+}
+
+.galleryImageWrap {
+  position: relative;
+  border-radius: var(--r);
+  overflow: hidden;
+  box-shadow: var(--sh);
+}
+
+.galleryImage {
+  width: 100%;
+  height: auto;
+}
