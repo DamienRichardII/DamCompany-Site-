@@ -2441,7 +2441,57 @@ body {
     align-items: center;
     text-align: center;
   }
-  
+  .v-hero-ctas {
+    flex-direction: column;
+    width: 100%;
+    gap: 12px;
+  }
+  .v-hero-ctas .v-btn {
+    width: 100%;
+  }
+  .v-hero-right,
+  .v-hero-services-desktop {
+    display: none;
+  }
+  .v-hero-services-mobile {
+    display: block;
+    padding: 8px 20px 24px;
+  }
+  .v-trust {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .v-trust-logos {
+    display: none;
+  }
+  .v-offer-body,
+  .v-offer-lg .v-offer-body,
+  .v-span-2 .v-offer-body {
+    grid-template-columns: 1fr;
+  }
+  .v-span-2 .v-offer-visual {
+    min-height: 0;
+  }
+  .v-offer-visual {
+    order: -1;
+    min-height: 0;
+    padding-block: 8px;
+  }
+  .v-offer-lg .v-offer-visual {
+    min-height: 0;
+  }
+  .v-features {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    row-gap: 18px;
+  }
+  .v-form-row {
+    grid-template-columns: 1fr;
+  }
+  .v-footer-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 640px) {
   .v-why,
   .v-steps {
@@ -2489,17 +2539,71 @@ body {
   }
 }
 
-/* Équipe de 2 : pas de flèches */
-.v-team[data-count="1"] .v-team-arrow,
-.v-team[data-count="2"] .v-team-arrow,
-.v-team[data-count="3"] .v-team-arrow {
-  display: none;
-}
 @media (max-width: 860px) {
   .v-logo-img {
     height: 36px;
   }
   .v-bigmark-img {
     width: min(70vw, 320px);
+  }
+}
+
+/* ------------------------- Page Réalisations ---------------------------- */
+
+.v-rea {
+  padding-block: clamp(24px, 4vw, 56px) 0;
+}
+.v-rea-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: clamp(16px, 2.4vw, 32px);
+}
+.v-rea-card {
+  position: relative;
+  aspect-ratio: 2 / 1;
+  border-radius: clamp(18px, 2.2vw, 32px);
+  overflow: hidden;
+  background: #111;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow-card);
+}
+.v-rea-card img {
+  transition: transform 0.8s var(--ease-entrance);
+}
+.v-rea-card:hover img {
+  transform: scale(1.025);
+}
+.v-rea-info {
+  position: absolute;
+  inset: auto 0 0 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+  padding: clamp(40px, 6vw, 96px) clamp(16px, 2.6vw, 36px) clamp(14px, 2.2vw, 30px);
+  background: linear-gradient(180deg, transparent, rgba(8, 8, 8, 0.6) 40%, rgba(8, 8, 8, 0.92));
+  color: #fff;
+}
+.v-rea-info h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.6vw, 2.4rem);
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+}
+.v-rea-type {
+  flex: none;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: var(--yellow);
+  color: var(--ink);
+  font-weight: 600;
+  font-size: clamp(12px, 1.2vw, 15px);
+}
+@media (max-width: 860px) {
+  .v-rea-card {
+    aspect-ratio: 16 / 10;
   }
 }

@@ -1,52 +1,39 @@
-import type { Metadata } from "next";
+import Image from "next/image";
+import { SHOWCASE_PROJECTS } from "@/content/showcase";
 import { buildMetadata } from "@/lib/seo";
-import { Eyebrow } from "@/components/ui/Eyebrow";
-import { FilterTabs } from "@/components/ui/FilterTabs";
-import { Card } from "@/components/ui/Card";
-import { getProjectsByUniverse, type Universe } from "@/content/projects";
-import styles from "./page.module.css";
 
-export const metadata: Metadata = buildMetadata({
+export const metadata = buildMetadata({
   title: "Réalisations",
   description:
-    "La galerie des projets DamCompany : sites, applications, IA et automatisation livrés pour nos clients.",
+    "Les projets DamCompany : sites internet, applications, IA et portfolios livrés pour nos clients.",
   path: "/realisations",
 });
 
-function parseUniverse(value?: string): Universe | undefined {
-  return value === "build" || value === "intelligence" ? value : undefined;
-}
-
-type RealisationsPageProps = {
-  searchParams: Promise<{ universe?: string }>;
-};
-
-export default async function RealisationsPage({ searchParams }: RealisationsPageProps) {
-  const { universe: rawUniverse } = await searchParams;
-  const universe = parseUniverse(rawUniverse);
-  const projects = getProjectsByUniverse(universe);
-
+export default function RealisationsPage() {
   return (
-    <main className={styles.page}>
-      <div className="dc-container">
-        <div className={styles.header}>
-          <Eyebrow>Réalisations</Eyebrow>
-          <h1 className={styles.title}>Des idées devenues produits</h1>
-          <p className={styles.text}>
-            Une sélection de projets BUILD et INTELLIGENCE livrés par DamCompany.
-          </p>
-          <FilterTabs active={universe} />
-        </div>
-
-        {projects.length > 0 ? (
-          <div className={styles.grid}>
-            {projects.map((project) => (
-              <Card key={project.slug} project={project} />
-            ))}
-          </div>
-        ) : (
-          <p className={styles.empty}>Aucune réalisation dans cet univers pour le moment.</p>
-        )}
+    <main id="main" className="v-rea">
+      <div className="v-container">
+        <h1 className="v-sr">Nos réalisations</h1>
+        <ul className="v-rea-list">
+          {SHOWCASE_PROJECTS.map((p, i) => (
+            <li key={`${p.file}`}>
+              <article className="v-rea-card">
+                <Image
+                  src={`/images/projets/${p.file}.webp`}
+                  alt={`${p.name} — ${p.type}`}
+                  fill
+                  sizes="(min-width: 1400px) 1280px, 94vw"
+                  priority={i < 2}
+                  style={{ objectFit: "cover", objectPosition: "top" }}
+                />
+                <div className="v-rea-info">
+                  <h2>{p.name}</h2>
+                  <span className="v-rea-type">{p.type}</span>
+                </div>
+              </article>
+            </li>
+          ))}
+        </ul>
       </div>
     </main>
   );
