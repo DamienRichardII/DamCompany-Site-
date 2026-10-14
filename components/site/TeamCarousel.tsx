@@ -8,6 +8,7 @@ import { Bolt } from "@/components/brand/Brand";
 export type TeamMember = { name: string; role: string; image: string | null };
 
 export function TeamCarousel({ members }: { members: TeamMember[] }) {
+  const scrollable = members.length > 3;
   const track = useRef<HTMLUListElement>(null);
   const scroll = (dir: 1 | -1) => {
     const el = track.current;
@@ -16,16 +17,29 @@ export function TeamCarousel({ members }: { members: TeamMember[] }) {
   };
 
   return (
-    <div className="v-team">
-      <button type="button" className="v-team-arrow v-team-prev" aria-label="Membre précédent" onClick={() => scroll(-1)}>
-        <ChevronLeft size={20} aria-hidden />
-      </button>
+    <div className="v-team" data-count={members.length}>
+      {scrollable && (
+        <button
+          type="button"
+          className="v-team-arrow v-team-prev"
+          aria-label="Membre précédent"
+          onClick={() => scroll(-1)}
+        >
+          <ChevronLeft size={20} aria-hidden />
+        </button>
+      )}
       <ul ref={track} className="v-team-track">
         {members.map((m, i) => (
           <li key={m.name} className="v-member">
             <div className="v-member-photo" data-tone={i % 3}>
               {m.image ? (
-                <Image src={m.image} alt={`${m.name}, ${m.role}`} fill sizes="(min-width: 900px) 340px, 80vw" style={{ objectFit: "cover" }} />
+                <Image
+                  src={m.image}
+                  alt={`${m.name}, ${m.role}`}
+                  fill
+                  sizes="(min-width: 900px) 340px, 80vw"
+                  style={{ objectFit: "cover" }}
+                />
               ) : (
                 <>
                   <svg viewBox="0 0 200 200" aria-hidden fill="currentColor">
@@ -41,9 +55,16 @@ export function TeamCarousel({ members }: { members: TeamMember[] }) {
           </li>
         ))}
       </ul>
-      <button type="button" className="v-team-arrow v-team-next" aria-label="Membre suivant" onClick={() => scroll(1)}>
-        <ChevronRight size={20} aria-hidden />
-      </button>
+      {scrollable && (
+        <button
+          type="button"
+          className="v-team-arrow v-team-next"
+          aria-label="Membre suivant"
+          onClick={() => scroll(1)}
+        >
+          <ChevronRight size={20} aria-hidden />
+        </button>
+      )}
     </div>
   );
 }

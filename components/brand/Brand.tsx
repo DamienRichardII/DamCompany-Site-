@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SITE } from "@/lib/site";
 
 /** Éclair DamCompany. */
@@ -16,24 +17,31 @@ export function Bolt({ className }: { className?: string }) {
   );
 }
 
-/** Logo horizontal (header / footer). */
+/** Vrai logo DamCompany (fichier /public/brand/logo-damc.png, fond transparent). */
+const LOGO = { src: "/brand/logo-damc.png", width: 796, height: 316 } as const;
+
+/** Logo horizontal (header / footer / menu). */
 export function Logo({ className = "" }: { className?: string }) {
   return (
     <span className={`v-logo ${className}`}>
-      <Bolt className="v-logo-bolt" />
-      <span className="v-logo-text">{SITE.name}</span>
+      <Image src={LOGO.src} width={LOGO.width} height={LOGO.height} alt="DamCompany" className="v-logo-img" priority />
     </span>
   );
 }
 
-/** Grand logo « DamC » du hero. */
+/** Grand logo du hero. */
 export function BigMark({ className = "" }: { className?: string }) {
   return (
-    <div className={`v-bigmark ${className}`} role="img" aria-label="DamCompany">
-      <Bolt className="v-bigmark-bolt" />
-      <span className="v-bigmark-text" aria-hidden>
-        DamC
-      </span>
+    <div className={`v-bigmark ${className}`}>
+      <Image
+        src={LOGO.src}
+        width={LOGO.width}
+        height={LOGO.height}
+        alt="DamCompany"
+        className="v-bigmark-img"
+        sizes="(min-width: 900px) 520px, 70vw"
+        priority
+      />
     </div>
   );
 }

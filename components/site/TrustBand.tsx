@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react";
 
-const LOGOS = ["CMR", "NOVRA", "AGENCY A", "PEACEMIND", "SK"];
+const LOGOS = ["NZ 100%", "NOVRA", "ICP", "CMAKEUP BEAUTY", "DFC"];
 
 export function TrustBand() {
   return (

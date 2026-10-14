@@ -18,5 +18,5 @@ export function mediaIfExists(relativePath: string): string | null {
 export const MEDIA_SLOTS = {
   hero: "images/hero.webp",
   showroom: "images/a-propos-showroom.webp",
-  team: ["images/team/damien.webp", "images/team/createur.webp", "images/team/developpeur.webp"],
+  team: ["images/team/damien.webp", "images/team/sandrine.webp"],
 } as const;

@@ -15,7 +15,7 @@ export const SITE = {
   hours: "Lun - Sam : 9h - 19h",
   founder: "Damien-Richard Miyouna",
   socials: {
-    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL ?? "https://www.tiktok.com/@damcompany",
+    tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL ?? "https://www.tiktok.com/@damcompany3",
     instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://www.instagram.com/damcompany",
   },
   stats: [

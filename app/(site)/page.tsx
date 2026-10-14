@@ -4,13 +4,11 @@ import { BigMark } from "@/components/brand/Brand";
 import { DevicesDuo } from "@/components/visuals/Visuals";
 import { ServiceIconRow, ServiceTiles } from "@/components/site/ServiceIconRow";
 import { TrustBand } from "@/components/site/TrustBand";
-import { OfferCard } from "@/components/site/OfferCard";
 import { ProjectsStrip } from "@/components/site/ProjectsStrip";
 import { AboutBlock, TeamBlock } from "@/components/site/Blocks";
 import { CtaBand } from "@/components/site/CtaBand";
 import { SectionHead } from "@/components/site/SectionHead";
 import { Reveal } from "@/components/motion/Reveal";
-import { OFFERS } from "@/content/offers";
 import { buildMetadata, SITE_URL } from "@/lib/seo";
 import { SITE } from "@/lib/site";
 
@@ -20,8 +18,6 @@ export const metadata = buildMetadata({
     "DamCompany, agence digitale à Aulnay-sous-Bois : sites internet, applications mobiles, IA, CRM 3D, reporting automatisé, motion design, carte fidélité 3D et supports de création.",
   path: "/",
 });
-
-const WIDE = new Set(["web", "print"]);
 
 export default function Home() {
   const jsonLd = {
@@ -48,16 +44,12 @@ export default function Home() {
       {/* 01 — Accueil */}
       <section className="v-hero" aria-labelledby="hero-title">
         <div className="v-hero-card">
-          <span className="v-num v-hero-num" aria-hidden>
-            01
-          </span>
           <div className="v-hero-main">
             <div className="v-hero-left">
               <h1 id="hero-title" className="v-sr">
                 DamCompany — agence digitale : sites internet, applications mobiles et IA
               </h1>
               <BigMark />
-              <p className="v-hero-lead">Sites internet, applications, IA et outils digitaux sur mesure pour votre business.</p>
               <div className="v-hero-ctas">
                 <Link href="/services" className="v-btn v-btn-dark v-btn-lg">
                   Découvrir nos services <ArrowRight size={18} aria-hidden />
@@ -84,30 +76,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 02 → 09 — Services */}
-      <section className="v-section" id="services" aria-label="Nos services">
-        <div className="v-container">
-          <Reveal>
-            <SectionHead
-              title="Nos services"
-              sub="Huit expertises, une seule agence : du site vitrine à la carte de fidélité 3D."
-              actions={
-                <Link href="/services" className="v-btn v-btn-light">
-                  Tous les services <ArrowRight size={16} aria-hidden />
-                </Link>
-              }
-            />
-          </Reveal>
-          <div className="v-offers-grid">
-            {OFFERS.map((o) => (
-              <Reveal key={o.slug} className={WIDE.has(o.visual) ? "v-span-2" : undefined}>
-                <OfferCard offer={o} />
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Réalisations */}
       <section className="v-section v-section-tight" aria-label="Nos dernières réalisations">
         <div className="v-container">
@@ -121,7 +89,7 @@ export default function Home() {
               }
             />
           </Reveal>
-          <ProjectsStrip limit={6} />
+          <ProjectsStrip />
         </div>
       </section>
 

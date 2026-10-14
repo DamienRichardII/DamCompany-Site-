@@ -1,22 +1,35 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { PUBLISHED_PROJECTS } from "@/content/projects";
 
-export function ProjectsStrip({ limit = 6 }: { limit?: number }) {
-  const items = PUBLISHED_PROJECTS.slice(0, limit);
-  if (!items.length) return null;
+/** Réalisations mises en avant sur l'accueil (captures dans /public/images/realisations). */
+const SHOWCASE = [
+  { name: "Barber Truck", file: "barbertruck" },
+  { name: "Top Hoops", file: "top-hoops" },
+  { name: "CMR Personnalisation", file: "cmr-personnalisation" },
+  { name: "CMakeup Beauty", file: "cmakeup-beauty" },
+  { name: "Novra", file: "novra" },
+  { name: "BC Villepinte 93", file: "bc-villepinte-93" },
+] as const;
+
+export function ProjectsStrip() {
   return (
     <ul className="v-projects">
-      {items.map((p) => (
-        <li key={p.slug}>
-          <Link href={`/realisations/${p.slug}`} className="v-project">
+      {SHOWCASE.map((p) => (
+        <li key={p.file}>
+          <Link href="/realisations" className="v-project">
             <span className="v-project-img">
-              <Image src={p.cover} alt={`Interface du projet ${p.name}`} sizes="(min-width: 900px) 360px, 80vw" />
+              <Image
+                src={`/images/realisations/${p.file}.webp`}
+                alt={`Site ${p.name}`}
+                fill
+                sizes="(min-width: 900px) 360px, 80vw"
+                style={{ objectFit: "cover", objectPosition: "top" }}
+              />
               <b>{p.name}</b>
             </span>
             <span className="v-project-link">
-              Voir le projet <ArrowRight size={14} aria-hidden />
+              Voir les réalisations <ArrowRight size={14} aria-hidden />
             </span>
           </Link>
         </li>

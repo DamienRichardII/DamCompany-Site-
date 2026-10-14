@@ -7,8 +7,6 @@ export const NAV_ITEMS: NavItem[] = [
   { label: "Accueil", href: "/" },
   { label: "Nos services", href: "/services" },
   { label: "Réalisations", href: "/realisations" },
-  { label: "À propos", href: "/a-propos" },
-  { label: "Contact", href: "/contact" },
 ];
 
 /** Compat : l'ancien header exposait HEADER_NAV_ITEMS. */

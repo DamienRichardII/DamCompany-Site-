@@ -413,8 +413,7 @@ export function Showroom({ image }: { image?: string | null }) {
   return (
     <div className="vz-showroom" role="img" aria-label="Showroom DamCompany">
       <div className="vz-showroom-wall">
-        <Bolt className="vz-showroom-bolt" />
-        <b>DamC</b>
+        <Image src="/brand/logo-damc.png" width={796} height={316} alt="DamCompany" className="vz-showroom-logo" />
       </div>
       <div className="vz-showroom-floor" />
       <div className="vz-showroom-desk" />

@@ -49,9 +49,8 @@ export function AboutBlock({ heading = "h2" }: { heading?: "h1" | "h2" }) {
 /* ----------------------------- 11 — Équipe ------------------------------- */
 
 const MEMBERS: Omit<TeamMember, "image">[] = [
-  { name: "Damien", role: "Fondateur" },
-  { name: "Créatif", role: "Design & Motion" },
-  { name: "Développeur", role: "Web & App" },
+  { name: "Damien-Richard Miyouna", role: "Fondateur" },
+  { name: "Sandrine Kellam Nonga", role: "Directrice adjointe" },
 ];
 
 export function TeamBlock({ heading = "h2" }: { heading?: "h1" | "h2" }) {
