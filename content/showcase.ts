@@ -18,5 +18,6 @@ export const SHOWCASE_PROJECTS: ShowcaseItem[] = [
   { name: "Fly Future Champions", type: "Site internet", file: "fly-future-champions" },
   { name: "Fly Association", type: "Site internet", file: "fly-association" },
   { name: "Wawa Photobooth", type: "Site internet", file: "wawa-photobooth" },
+  { name: "Mariekey Expert", type: "Site internet", file: "mariekey-expert" },
   { name: "DamCompany", type: "Site internet", file: "damcompany" },
 ];
