@@ -2,6 +2,8 @@
 export type ShowcaseItem = { name: string; type: string; file: string };
 
 export const SHOWCASE_PROJECTS: ShowcaseItem[] = [
+  { name: "KENAYAH", type: "Agent IA", file: "kenayah" },
+  { name: "TBL", type: "Site internet", file: "tbl" },
   { name: "Barber Truck", type: "Site internet", file: "barbertruck" },
   { name: "MA1", type: "Site internet", file: "ma1-site" },
   { name: "MA1", type: "IA", file: "ma1-ia" },
