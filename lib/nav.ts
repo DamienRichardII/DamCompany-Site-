@@ -6,6 +6,7 @@ export type NavItem = { label: string; href: string };
 export const NAV_ITEMS: NavItem[] = [
   { label: "Accueil", href: "/" },
   { label: "Nos services", href: "/services" },
+  { label: "Tarifs", href: "/tarifs" },
   { label: "Réalisations", href: "/realisations" },
 ];
 
@@ -20,6 +21,7 @@ export const SERVICE_LINKS: NavItem[] = OFFERS.map((o) => ({
 export const COMPANY_LINKS: NavItem[] = [
   { label: "À propos", href: "/a-propos" },
   { label: "Notre équipe", href: "/equipe" },
+  { label: "Tarifs", href: "/tarifs" },
   { label: "Réalisations", href: "/realisations" },
   { label: "Configurer ma carte fidélité", href: "/carte-de-fidelite" },
   { label: "Contact", href: "/contact" },

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { LenisProvider } from "@/components/motion/LenisProvider";
 import { Header } from "@/components/site/Header";
 import { Footer } from "@/components/site/Footer";
+import { WhatsAppButton } from "@/components/site/WhatsAppButton";
 
 export default function SiteLayout({ children }: { children: ReactNode }) {
   return (
@@ -12,6 +13,7 @@ export default function SiteLayout({ children }: { children: ReactNode }) {
       <Header />
       {children}
       <Footer />
+      <WhatsAppButton />
     </LenisProvider>
   );
 }

@@ -6,9 +6,11 @@ export const SITE = {
   name: "DamCompany",
   domain: "damcompany.tech",
   tagline: "Des solutions digitales pour propulser votre business.",
-  email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "contact@damcompany.tech",
-  phone: "07 44 23 18 98",
-  phoneHref: "+33744231898",
+  /** Email masqué tant que l'adresse professionnelle n'existe pas (renseigner NEXT_PUBLIC_CONTACT_EMAIL pour le réafficher). */
+  email: (process.env.NEXT_PUBLIC_CONTACT_EMAIL?.trim() || null) as string | null,
+  phone: "06 63 23 09 13",
+  phoneHref: "+33663230913",
+  whatsappHref: "https://wa.me/33663230913?text=Bonjour%20DamCompany%2C%20j%27aimerais%20avoir%20des%20informations.",
   city: "Aulnay-sous-Bois",
   postalCode: "93600",
   country: "France",
@@ -16,7 +18,7 @@ export const SITE = {
   founder: "Damien-Richard Miyouna",
   socials: {
     tiktok: process.env.NEXT_PUBLIC_TIKTOK_URL ?? "https://www.tiktok.com/@damcompany3",
-    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://www.instagram.com/damcompany",
+    instagram: process.env.NEXT_PUBLIC_INSTAGRAM_URL ?? "https://www.instagram.com/damcompany_",
   },
   stats: [
     { value: "+150", label: "Clients" },

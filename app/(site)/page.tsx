@@ -25,7 +25,7 @@ export default function Home() {
     "@type": "ProfessionalService",
     name: SITE.name,
     url: SITE_URL,
-    email: SITE.email,
+    ...(SITE.email ? { email: SITE.email } : {}),
     telephone: SITE.phoneHref,
     description: SITE.tagline,
     address: {

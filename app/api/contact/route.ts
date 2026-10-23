@@ -16,12 +16,12 @@ export async function POST(request: Request) {
   const to = process.env.CONTACT_TO?.trim() || SITE.email;
   const from = process.env.CONTACT_FROM?.trim() || `DamCompany <site@${SITE.domain}>`;
 
-  if (!key) {
+  if (!key || !to) {
     return json(
       {
         ok: false,
         error: "not_configured",
-        message: `Le formulaire n'est pas encore actif. Écrivez-nous à ${SITE.email}.`,
+        message: `Le formulaire n'est pas encore actif. Écrivez-nous sur WhatsApp au ${SITE.phone}.`,
       },
       503
     );

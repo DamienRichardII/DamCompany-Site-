@@ -41,9 +41,11 @@ export function Footer() {
             <li>
               {SITE.city}, {SITE.postalCode}
             </li>
-            <li>
-              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-            </li>
+            {SITE.email && (
+              <li>
+                <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+              </li>
+            )}
             <li>
               <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
             </li>

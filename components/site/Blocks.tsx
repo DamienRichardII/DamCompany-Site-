@@ -90,10 +90,12 @@ export function ContactBlock({ heading = "h2", defaultProject = "" }: { heading?
               {SITE.city}, {SITE.postalCode}
             </span>
           </li>
-          <li>
-            <Mail size={18} aria-hidden />
-            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
-          </li>
+          {SITE.email && (
+            <li>
+              <Mail size={18} aria-hidden />
+              <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+            </li>
+          )}
           <li>
             <Phone size={18} aria-hidden />
             <a href={`tel:${SITE.phoneHref}`}>{SITE.phone}</a>
@@ -131,7 +133,7 @@ export function LegalBlock({ heading = "h2" }: { heading?: "h1" | "h2" }) {
             <li>TVA intracommunautaire : {LEGAL.vat ?? MISSING}</li>
             <li>Directeur de la publication : {LEGAL.publisher}</li>
             <li>
-              Contact : <a href={`mailto:${SITE.email}`}>{SITE.email}</a> · {SITE.phone}
+              Contact : {SITE.email && <><a href={`mailto:${SITE.email}`}>{SITE.email}</a> · </>}{SITE.phone}
             </li>
           </ul>
         </>
@@ -172,8 +174,8 @@ export function LegalBlock({ heading = "h2" }: { heading?: "h1" | "h2" }) {
           </p>
           <p>
             Conformément au RGPD, vous disposez d&apos;un droit d&apos;accès, de rectification, d&apos;effacement,
-            d&apos;opposition et de portabilité. Pour l&apos;exercer, écrivez à{" "}
-            <a href={`mailto:${SITE.email}`}>{SITE.email}</a>. Vous pouvez également saisir la CNIL (cnil.fr).
+            d&apos;opposition et de portabilité. Pour l&apos;exercer, contactez-nous{" "}
+            {SITE.email ? <>à <a href={`mailto:${SITE.email}`}>{SITE.email}</a></> : <>par téléphone ou WhatsApp au {SITE.phone}</>}. Vous pouvez également saisir la CNIL (cnil.fr).
           </p>
         </>
       ),
@@ -203,7 +205,7 @@ export function LegalBlock({ heading = "h2" }: { heading?: "h1" | "h2" }) {
             nouveau devis. Un suivi ou une maintenance peut être souscrit séparément.
           </p>
           <p>
-            Pour toute question sur ces conditions, contactez-nous à <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+            Pour toute question sur ces conditions, contactez-nous {SITE.email ? <>à <a href={`mailto:${SITE.email}`}>{SITE.email}</a></> : <>par téléphone ou WhatsApp au {SITE.phone}</>}.
           </p>
         </>
       ),

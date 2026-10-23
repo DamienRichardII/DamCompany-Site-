@@ -37,7 +37,7 @@ export function ContactForm({ defaultProject = "" }: { defaultProject?: string }
       setFields(body.fields ?? {});
     } catch {
       setStatus("error");
-      setMessage(`Connexion impossible. Écrivez-nous à ${SITE.email}.`);
+      setMessage(`Connexion impossible. Écrivez-nous sur WhatsApp au ${SITE.phone}.`);
     }
   }
 
