@@ -4,7 +4,7 @@ const SITE_NAME = "DamCompany";
 const TITLE_SEPARATOR = "—";
 const DEFAULT_DESCRIPTION =
   "DamCompany — agence digitale : création de sites, applications, IA, data et automatisation. De l'idée au produit intelligent.";
-const DEFAULT_OG_IMAGE = "/brand/og.webp";
+const DEFAULT_OG_IMAGE = "/brand/og.jpg";
 
 /**
  * URL de production : NEXT_PUBLIC_SITE_URL, sinon https://damcompany.tech en
@@ -19,7 +19,7 @@ type PageSeoInput = {
   title: string;
   description?: string;
   path?: string;
-  /** Image OG réelle (ex. cover d'un projet) — défaut : public/brand/og.webp. */
+  /** Image OG réelle (ex. cover d'un projet) — défaut : public/brand/og.jpg. */
   image?: string;
 };
 
