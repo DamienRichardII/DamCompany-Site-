@@ -2,6 +2,7 @@
 export type ShowcaseItem = { name: string; type: string; file: string };
 
 export const SHOWCASE_PROJECTS: ShowcaseItem[] = [
+  { name: "Fast Track Conciergerie", type: "Site internet", file: "fast-track-conciergerie" },
   { name: "Comité Handball 93", type: "Site internet", file: "comite-handball-93" },
   { name: "Bloom Glow", type: "Site internet", file: "bloom-glow" },
   { name: "KENAYAH", type: "Agent IA", file: "kenayah" },
