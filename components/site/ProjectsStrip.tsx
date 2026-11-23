@@ -2,15 +2,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-/** Réalisations mises en avant sur l'accueil (captures dans /public/images/realisations). */
-const SHOWCASE = [
-  { name: "Barber Truck", file: "barbertruck" },
-  { name: "Top Hoops", file: "top-hoops" },
-  { name: "CMR Personnalisation", file: "cmr-personnalisation" },
-  { name: "CMakeup Beauty", file: "cmakeup-beauty" },
-  { name: "Novra", file: "novra" },
-  { name: "BC Villepinte 93", file: "bc-villepinte-93" },
-] as const;
+import { SHOWCASE_PROJECTS } from "@/content/showcase";
+
+/** Les 6 dernières réalisations : reprend le haut de la liste de la page Réalisations. */
+const SHOWCASE = SHOWCASE_PROJECTS.slice(0, 6);
 
 export function ProjectsStrip() {
   return (
@@ -20,8 +15,8 @@ export function ProjectsStrip() {
           <Link href="/realisations" className="v-project">
             <span className="v-project-img">
               <Image
-                src={`/images/realisations/${p.file}.webp`}
-                alt={`Site ${p.name}`}
+                src={`/images/projets/${p.file}.webp`}
+                alt={`${p.type} ${p.name}`}
                 fill
                 sizes="(min-width: 900px) 360px, 80vw"
                 style={{ objectFit: "cover", objectPosition: "top" }}
